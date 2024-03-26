@@ -1,121 +1,80 @@
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
-const db = require('../database/database'); // Assurez-vous du chemin correct
+const db = require("../database/database");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-
-// exports.authenticator = (req, res, next) =>{
-//     // récupérer le token
-//     const token = req.params.token ? req.params.token : req.headers.authorization
-//     if(token && process.env.SECRET_KEY){
-//         jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=>{
-//             // si problème => erreur
-//             if(err){
-//                 res.status(401).json({erreur: "accès refusé"})
-//             }
-//             // décoder => next()
-//             else{
-//                 console.log(decoded);
-//                 const result = db.query('select role FROM client where email = ?', [decoded.email])
-//                 if(result.length === 1 && result[0].role == 1){
-//                     next()
-//             }
-//         }
-//         })
-//     }else{
-//         res.status(401).json({erreur: "accès refusé"})
-//     }
-// }
-
-exports.authenticator = (req, res, next) => {
-    // récupérer le token
-    const token = req.params.token ? req.params.token : req.headers.authorization;
-    if (token && process.env.SECRET_KEY) {
-        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-            // si problème => erreur
-            if (err) {
-                res.status(401).json({ erreur: "accès refusé" });
-            }
-            // décoder => next()
-            else {
-                console.log(decoded);
-
-                // Ajoutez cette partie pour stocker le token dans le localStorage
-                if (decoded && decoded.token) {
-                    localStorage.setItem('jwtToken', decoded.token);
-                }
-
-                const result = db.query('select role FROM client where email = ?', [decoded.email])
-                if (result.length === 1 && result[0].role == 1) {
-                    next()
-                }
-            }
-        })
-    } else {
-        res.status(401).json({ erreur: "accès refusé" });
-    }
-}
-
-
-exports.checkRole = (roles) => {
-    return (req, res, next) => {
-        const token = req.params.token ? req.params.token : req.headers.authorization;
-        if (token && process.env.SECRET_KEY) {
-            jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
-                if (err) {
-                    return res.status(401).json({ erreur: "Accès refusé" });
-                } else {
-                    const userRole = decoded.role;                   
-                    if (roles.includes(userRole)) {
-                        next();
-                    } else {
-                        return res.status(403).json({ erreur: "Accès interdit" });
-                    }
-                }
-            });
-        } else {
-            return res.status(401).json({ erreur: "Accès refusé" });
-        }
-    };
+const getEmailFromToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.SECRETKEY);
+    return decoded.email;
+  } catch (error) {
+    return null;
+  }
 };
 
+exports.authenticator = (req, res, next) => {
+  // Vérifier le token
+  const token = req.params.token ? req.params.token : req.headers.authorization;
+  // Décoder le token
+  if (token && process.env.SECRETKEY) {
+    jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
+      if (err) {
+        res.status(401).json({ erreur: "Accès refusé" });
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.status(401).json({ erreur: "Accès refusé" });
+  }
+};
 
+exports.isAdmin = async (req, res, next) => {
+  const token = req.query.token || req.headers.authorization;
+  if (!token) return res.status(401).json({ error: "Access refusé." });
 
+  const email = getEmailFromToken(token);
 
-// // Middleware pour vérifier si l'utilisateur est administrateur
-// exports.Admin = async (req, res, next) => {
-//   console.log('req.user:', req.user); 
-//   const userId = req.user.id; 
-//   const sql = 'SELECT role FROM utilisateur WHERE id = ?';
+  if (!email) {
+    return res.status(401).json({ error: "Token invalide" });
+  }
 
-//   try {
-//     const user = await db.query(sql, [userId]);
-//     if (user.length === 1 && user[0].role === 'administrateur') {
-//       return next();
-//     }
-//     return res.status(403).json({ message: 'Accès interdit' });
-//   } catch (error) {
-//     return res.status(500).json({ message: 'Erreur serveur' });
-//   }
-// };
+  try {
+    const result = await db.query(
+      "SELECT role from user where email = ?",
+      email
+      );
 
-// // Nouvelle fonction de middleware pour vérifier si l'utilisateur est administrateur
-// exports.checkAdminRole = (req, res, next) => {
-//     const token = req.params.token ? req.params.token : req.headers.authorization;
-//     if (token && process.env.SECRET_KEY) {
-//         jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
-//             if (err) {
-//                 return res.status(401).json({ erreur: "Accès refusé" });
-//             } else {
-//                 console.log(decoded);
-//                 const role = decoded.role;
-//                 if (role === 'administrateur') {
-//                     next();
-//                 } else {
-//                     return res.status(403).json({ erreur: "Accès interdit : seuls les administrateurs peuvent effectuer cette action." });
-//                 }
-//             }
-//         });
-//     } else {
-//         return res.status(401).json({ erreur: "Accès refusé" });
-//     }
-// };
+    if (result[0].role === 'client') {
+      next();
+    } else {
+      res.status(403).json({ erreur: "Accès refusé" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal server " });
+  }
+};
+  
+exports.isReporterOrAdmin = async (req, res, next) => {
+    const token = req.query.token || req.headers.authorization;
+    if (!token) return res.status(401).json({ error: "Access refusé." });
+  
+    const email = getEmailFromToken(token);
+  
+    if (!email) {
+      return res.status(401).json({ error: "Token invalide" });
+    }
+  
+    try {
+      const result = await db.query(
+        "SELECT role from user where email = ?",
+        email
+        );
+      if (result[0].role === 'client' || result[0].role === 'admin') {
+        next();
+      } else {
+        res.status(403).json({ erreur: "Accès refusé" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Internal server " });
+    }
+  };
