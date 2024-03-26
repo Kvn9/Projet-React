@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 exports.getAllUtilisateur = async(req, res)=> {
-    const sql = "SELECT * from utilisateur";
+    const sql = "SELECT * from user";
     const resultat = await db.query(sql);
     console.log(resultat)
     res.status(200).json(resultat);
@@ -13,7 +13,7 @@ exports.getAllUtilisateur = async(req, res)=> {
 exports.updateUtilisateur = async (req, res) => {
     const userId = req.params.id;
     const { nom, prenom, email, password, role } = req.body; // Ajout des variables manquantes
-    const sql = 'UPDATE utilisateur SET nom = ?, prenom = ?, email = ?, password = ?, role = ? WHERE id = ?';
+    const sql = 'UPDATE user SET name = ?, username = ?, email = ?, password = ?, role = ? WHERE id = ?';
     const result = await db.query(sql, [nom, prenom, email, password, role, userId]); 
     res.json({ message: 'Utilisateur mis à jour avec succès' });
 };
@@ -21,7 +21,7 @@ exports.updateUtilisateur = async (req, res) => {
 
 exports.deleteUtilisateur =  async (req, res) => {
     const userId = req.params.id;
-    const sql = 'DELETE FROM utilisateur WHERE id = ?';
+    const sql = 'DELETE FROM user WHERE id = ?';
     const result = await db.query(sql, [userId]);
     res.json({ message: 'Utilisateur supprimé avec succès' });
 };
@@ -29,15 +29,15 @@ exports.deleteUtilisateur =  async (req, res) => {
 
 exports.getUtilisateurID = async (req, res) => {
     const userId = req.params.id;
-    const sql = 'SELECT * FROM utilisateur WHERE id = ?';
+    const sql = 'SELECT * FROM user WHERE id = ?';
     const result = await db.query(sql, [userId]);
     res.json(result[0]);
 };
     
 
 exports.insertUtilisateur = async (req, res) => {
-        const { nom, prenom, email, password, role } = req.body;
-        const sqlSelect = "SELECT id FROM utilisateur WHERE email = ?";
+        const { name, username, email, password, role } = req.body;
+        const sqlSelect = "SELECT id FROM user WHERE email = ?";
         
         try {
             const [rows] = await db.query(sqlSelect, [email]);
@@ -46,8 +46,8 @@ exports.insertUtilisateur = async (req, res) => {
                 // L'utilisateur avec cette adresse e-mail existe déjà
                 return res.status(409).json({ error: 'Adresse e-mail déjà utilisée' });
             } else {
-                const sqlInsert = "INSERT INTO utilisateur (nom, prenom, email, password, role) VALUES (?, ?, ?, ?,?)";
-                await db.query(sqlInsert, [nom, prenom, email, password, role ]);
+                const sqlInsert = "INSERT INTO user (name, username, email, password, role) VALUES (?, ?, ?, ?,?)";
+                await db.query(sqlInsert, [name, username, email, password, role ]);
                 return res.status(201).json({ message: 'Utilisateur créé' });
             }
         } catch (error) {
@@ -58,17 +58,17 @@ exports.insertUtilisateur = async (req, res) => {
 
 exports.register = async(req, res)=> {
         // vérifier l'email de l'utilisateur
-        const { nom, prenom, email, password } = req.body 
-        const result = await db.query('select * from utilisateur where email = ?', [email])
+        const { name, username, email, password } = req.body 
+        const result = await db.query('select * from user where email = ?', [email])
         if(result.length > 0){
-            return res.status(401).json({error: "utilisateur déjà existant"})
+            return res.status(401).json({error: "user déjà existant"})
         }
         // utilisez bcrypt pour hasher le mdp
         const hashMDP = await bcrypt.hash(password, 10);
         // envoyer les infos (email, mdp hasher) en bdd
     
-        await db.query('INSERT INTO utilisateur (nom, prenom, email, password) VALUES (?, ?, ?, ?)',
-        [nom, prenom, email, hashMDP]
+        await db.query('INSERT INTO user (name, username, email, password) VALUES (?, ?, ?, ?)',
+        [name, username, email, hashMDP ]
         )
         // renvoie jwt token pour la signature
         const token = jwt.sign({email}, process.env.SECRET_KEY, { expiresIn : '1h'})
@@ -78,7 +78,7 @@ exports.register = async(req, res)=> {
 exports.login = async(req, res)=> {
         // vérifier l'email de l'utilisateur => récupérer le mdp
         const { email, password } = req.body 
-        const result = await db.query('select * from utilisateur where email = ?', [email])
+        const result = await db.query('select * from user where email = ?', [email])
         if(result.length == 0){
             return res.status(401).json({error: "utilisateur non existant"})
         }
