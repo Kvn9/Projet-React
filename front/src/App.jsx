@@ -12,6 +12,7 @@ import Inscription from '../src/pages/Register/Register'
 import Statistique from './components/Statistiques/Statistique'
 import Detail from './components/Detail/Detail'
 import Card from './components/Card/Card'
+import Home from './pages/Home/Home'
 
 
 
@@ -22,22 +23,13 @@ function App() {
   return (
     <>
  <Header />
-   <Slide />
-   <Statistique />
-   <Card />
-   <Detail />
    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path='/accueil' element={<Home />} />
       <Route path="/connexion" element={<Connexion />} />
       <Route path="/inscription" element={<Inscription />} />
     </Routes>
    <Footer />  
-      {/* <Link to="/connexion"></Link>
-      <Link to="/inscription"></Link>
-      <Link to="/"></Link>
-      <Routes>
-        <Route path="/connexion" element={<Connexion />} />
-        <Route path="/inscriptio" element={<Inscription />} />
-      </Routes> */}
   </>
   )
 }
