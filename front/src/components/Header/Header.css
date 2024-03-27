@@ -1,0 +1,16 @@
+
+.navbar {
+    background-color: #0d6efd; /* Couleur de fond de la navbar */
+    display: flex;
+    justify-content: space-between; /* Pour aligner les éléments à gauche et à droite */
+    align-items: center; /* Pour aligner les éléments verticalement */
+    padding: 10px 20px; /* Marge intérieure */
+  }
+  
+  .navbar-logo img {
+    width: 20vh; /* Ajustez la taille de votre logo selon vos besoins */
+    height: auto; /* Pour maintenir le ratio */
+  }
+
+  
+

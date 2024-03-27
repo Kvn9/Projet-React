@@ -1,4 +1,4 @@
-const e = require('express');
+const express = require('express');
 const db = require('../database/database'); // Assurez-vous du chemin correct
 require ('dotenv').config();
 
@@ -43,5 +43,3 @@ exports.insertAnimaux = async (req, res) => {
     res.status(201).json({ message: 'Animal créé' });
 }
     
-
-
