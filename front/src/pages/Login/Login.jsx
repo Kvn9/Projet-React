@@ -1,8 +1,47 @@
 import React from 'react';
 import LogoChien from '../../../public/logo-sans-fond.png';
+import { useState } from 'react';
 
 
 export default () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!email || !password) {
+            return setError("Veuillez remplir tous les champs");
+        }
+        fetch("http://localhost:8000/utilisateur/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) {
+                    setError(data.error);
+                } else {
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    window.location.href = "/";
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                setError("Une erreur s'est produite");
+            });
+        setError("");
+    }
+
   return (
       <main className="w-full flex">
           <div className="relative flex-1 hidden items-center justify-center h-screen bg-gray-900 lg:flex">
@@ -40,7 +79,7 @@ export default () => {
                       <img src="https://floatui.com/logo.svg" width={150} className="lg:hidden" />
                       <div className="mt-5 space-y-2">
                           <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl text-center">Connectez-vous</h3>
-                          <p className="text-secondary">Vous avez pas de compte ? <a href="javascript:void(0)" className="font-medium text-indigo-600 hover:text-indigo-500">S'inscrire</a></p>
+                          <p className="text-secondary">Vous avez pas de compte ? <a href="/inscription" className="font-medium text-indigo-600 hover:text-indigo-500">S'inscrire</a></p>
                       </div>
                   </div>
                   <div className="grid grid-cols-3 gap-x-3">
@@ -89,7 +128,7 @@ export default () => {
                       <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">Or continue with</p>
                   </div>
                   <form
-                      onSubmit={(e) => e.preventDefault()}
+                      onSubmit={handleSubmit}
                       className="space-y-5"
                   >
                       <div>
@@ -98,6 +137,7 @@ export default () => {
                           </label>
                           <input
                               type="email"
+                              onChange={(e) => setEmail(e.target.value)}
                               required
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
@@ -108,11 +148,12 @@ export default () => {
                           </label>
                           <input
                               type="password"
+                                onChange={(e) => setPassword(e.target.value)}
                               required
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
                       </div>
-                      <button
+                      <button type='submit'
                           className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                       >
                           Se connecter

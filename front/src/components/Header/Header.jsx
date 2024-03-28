@@ -9,17 +9,17 @@ export default () => {
 
     // Replace javascript:void(0) paths with your paths
     const navigation = [
-        { title: "Home", path: "javascript:void(0)" },
+        { title: "Accueil", path: "/accueil" },
         { title: "Mes Rendez-Vous", path: "javascript:void(0)" },
-        { title: "Mon Cabinet", path: "javascript:void(0)" },
-        { title: "Forfait", path: "javascript:void(0)" }
+        { title: "Nos Cabinets", path: "/cabinets" },
+        { title: "Nos Tarifs", path: "/tarifs" }
     ]
 
     return (
         <nav className="bg-white border-b w-full md:static md:text-sm md:border-none text-base/6">
             <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8 text-base/6 bg-none">
                 <div className="flex items-center justify-between py-3 md:py-5 md:block">
-                    <a href="javascript:void(0)">
+                    <a href="/accueil">
                         <img
                             src={Logo}
                             width={120}
@@ -46,7 +46,7 @@ export default () => {
                     </div>
                 </div>
                 <div className={`flex-1 pb-3 mt-8 md:block md:pb-0 md:mt-0 ${state ? 'block' : 'hidden'}`}>
-                    <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+                    <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0 mt-4">
                         {
                             navigation.map((item, idx) => {
                                 return (
@@ -61,12 +61,12 @@ export default () => {
                         <span className='hidden w-px h-6 bg-gray-300 md:block'></span>
                         <div className='space-y-3 items-center gap-x-6 md:flex md:space-y-0'>
                             <li>
-                                <a href="javascript:void(0)" className="block py-3 text-center text-gray-700 hover:text-indigo-600 border rounded-lg md:border-none">
+                                <a href="/connexion" className="block py-3 px-4 text-center text-gray-700 hover:text-indigo-600 border rounded-lg md:border-none">
                                     Connexion
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)" className="block py-3 px-4 font-medium text-center text-white bg-fuchsia-500 hover:bg-indigo-500 active:bg-indigo-700 active:shadow-none rounded-lg shadow md:inline">
+                                <a href="/inscription" className="block py-3 px-4 font-medium text-center text-white bg-fuchsia-500 hover:bg-indigo-500 active:bg-indigo-700 active:shadow-none rounded-lg shadow md:inline">
                                     Inscription
                                 </a>
                             </li>

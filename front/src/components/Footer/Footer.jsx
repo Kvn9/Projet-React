@@ -26,19 +26,19 @@ export default () => {
           label: "VILLE",
           items: [
               {
-                  href: 'javascript:void()',
+                  href: '/cabinets',
                   name: 'PARIS'
               },
               {
-                  href: 'javascript:void()',
+                  href: '/cabinets',
                   name: 'MARSEILLE'
               },
               {
-                  href: 'javascript:void()',
+                  href: '/cabinets',
                   name: 'LYON'
               },
               {
-                  href: 'javascript:void()',
+                  href: '/cabinets',
                   name: 'CANNES'
               },
           ]

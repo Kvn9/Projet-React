@@ -7,16 +7,12 @@ import '../src/pages/Login/Login.css'
 import '../src/components/Header/Header.css'
 import Footer from '../src/components/Footer/Footer'
 import '../src/components/Footer/Footer.css'
-import Slide from '../src/components/Slide/Slide'
 import Inscription from '../src/pages/Register/Register'
-import Statistique from './components/Statistiques/Statistique'
-import Detail from './components/Detail/Detail'
-import Card from './components/Card/Card'
 import Home from './pages/Home/Home'
-
-
-
-
+import Cabinet from './pages/Cabinets/Cabinet'
+import Admin from './pages/Admin/Admin'
+import Error404 from './pages/Error404/Error404'
+import Tarifs from './pages/Tarifs/Tarifs'
 
 
 function App() {
@@ -28,6 +24,10 @@ function App() {
       <Route path='/accueil' element={<Home />} />
       <Route path="/connexion" element={<Connexion />} />
       <Route path="/inscription" element={<Inscription />} />
+      <Route path="/cabinets" element={<Cabinet />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="*" element={<Error404 />} />
+      <Route path='/tarifs' element={<Tarifs />} />
     </Routes>
    <Footer />  
   </>

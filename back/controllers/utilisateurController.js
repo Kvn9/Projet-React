@@ -57,24 +57,17 @@ exports.insertUtilisateur = async (req, res) => {
     };
 
 exports.register = async(req, res)=> {
-        // vérifier l'email de l'utilisateur
-        const { name, username, email, password } = req.body 
-        const result = await db.query('select * from user where email = ?', [email])
-        if(result.length > 0){
-            return res.status(401).json({error: "user déjà existant"})
-        }
-        // utilisez bcrypt pour hasher le mdp
-        const hashMDP = await bcrypt.hash(password, 10);
-        // envoyer les infos (email, mdp hasher) en bdd
-    
-        await db.query('INSERT INTO user (name, username, email, password) VALUES (?, ?, ?, ?)',
-        [name, username, email, hashMDP ]
-        )
-        // renvoie jwt token pour la signature
-        const token = jwt.sign({email}, process.env.SECRET_KEY, { expiresIn : '1h'})
-        res.json({token})
+    const { email, password } = req.body
+    const result = await db.query('select * from user where email = ?', [email])
+    if(result.length > 0){
+        return res.status(409).json({error: "utilisateur existant"})
     }
-    
+    const hash = await bcrypt.hash(password, 10)
+    await db.query('insert into user (email, password) values (?, ?)', [email, hash])
+    const token = jwt.sign({email}, process.env.SECRET_KEY, { expiresIn : '1h'})
+    res.json({token})
+}
+        
 exports.login = async(req, res)=> {
         // vérifier l'email de l'utilisateur => récupérer le mdp
         const { email, password } = req.body 

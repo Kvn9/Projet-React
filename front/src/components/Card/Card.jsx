@@ -48,7 +48,7 @@ function App() {
               </h2>
               <p className="text-justify">{card.description}</p>
               <div className="flex justify-center mt-4">
-                <button className="btn btn-primary">Voir plus</button>
+                <button className="btn btn-primary">En savoir plus</button>
               </div>
             </div>
           </div>

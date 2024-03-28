@@ -1,8 +1,37 @@
 import React from 'react';
+import { useState } from 'react';
 import LogoChien from '../../../public/logo-sans-fond.png';
+import axios from 'axios';
 
 
-export default () => {
+
+export default  () => {
+     const [name, setName] = useState('')
+     const [username, setUsername] = useState('')
+     const [email, setEmail] = useState('')
+     const [password, setPassword] = useState('')
+     const [error, setError] = useState('')
+     const [ accessToken, setAccessToken ] = useState('')
+
+     const handleRegister = async (e) => {
+            e.preventDefault()
+            console.log(name, username, email, password)
+            try {
+                const response = await axios.post('http://localhost:8000/utilisateur/register', {
+                    name,
+                    username,
+                    email,
+                    password
+
+                }).then((response) => {
+                    console.log(response.data)
+                    setAccessToken(response.data.accessToken)
+                })
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+
   return (
       <main className="w-full flex">
           <div className="relative flex-1 hidden items-center justify-center h-screen bg-gray-900 lg:flex">
@@ -40,7 +69,7 @@ export default () => {
                       <img src="https://floatui.com/logo.svg" width={150} className="lg:hidden" />
                       <div className="mt-5 space-y-2">
                           <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl text-center">S'inscrire</h3>
-                          <p className="text-secondary">Vous avez déjà un compte ? <a href="javascript:void(0)" className="font-medium text-indigo-600 hover:text-indigo-500">Connectez-vous</a></p>
+                          <p className="text-secondary">Vous avez déjà un compte ? <a href="/connexion" className="font-medium text-indigo-600 hover:text-indigo-500">Connectez-vous</a></p>
                       </div>
                   </div>
                   <div className="grid grid-cols-3 gap-x-3">
@@ -89,7 +118,7 @@ export default () => {
                       <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">Or continue with</p>
                   </div>
                   <form
-                      onSubmit={(e) => e.preventDefault()}
+                      onSubmit={handleRegister}
                       className="space-y-5"
                   >
                       <div>
@@ -98,6 +127,19 @@ export default () => {
                           </label>
                           <input
                               type="text"
+                              onChange={(e) => setName(e.target.value)}
+                              required
+                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                          />
+                      </div>
+                      <div>
+                          <label className="font-medium">
+                              Prénom
+                          </label>
+                          <input
+                              type="text"
+                              onChange={(e) => setUsername(e.target.value)}
+
                               required
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
@@ -108,6 +150,8 @@ export default () => {
                           </label>
                           <input
                               type="email"
+                              onChange={(e) => setEmail(e.target.value)}
+
                               required
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
@@ -118,11 +162,13 @@ export default () => {
                           </label>
                           <input
                               type="password"
+                              onChange={(e) => setPassword(e.target.value)}
+
                               required
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
                       </div>
-                      <button
+                      <button type='submit' onClick={handleRegister}
                           className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                       >
                           Créer un compte
