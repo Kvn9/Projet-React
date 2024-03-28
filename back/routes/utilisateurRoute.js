@@ -3,7 +3,7 @@ const router = express.Router();
 const utilisateurRoute = require('../controllers/utilisateurController');
 const middleware = require('../middleware/middleware');
 
-router.get('/getAllUtilisateur',  utilisateurRoute.getAllUtilisateur);
+router.get('/getAllUtilisateur', utilisateurRoute.getAllUtilisateur);
 router.put('/uptadeUtilisateur/:id', utilisateurRoute.updateUtilisateur);
 router.delete('/deleteUtilisateur/:id', utilisateurRoute.deleteUtilisateur);
 router.get('/getUtilisateurID/:id', utilisateurRoute.getUtilisateurID);

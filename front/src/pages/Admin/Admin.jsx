@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export default () => {
     const [tableItems, setTableItems] = useState([]);
@@ -34,6 +36,43 @@ export default () => {
             });
     }
 
+
+    const handleModifierUser = (id) => {
+        navigate(`/modifier/${id}`);
+    }
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
+
+   
+    useEffect(() => {
+        async () => {
+        const token = localStorage.getItem('token');
+        if (!token) return res.status(401).json({ error: "Access refusé." });
+
+        const email = getEmailFromToken(token);
+
+        if (!email) {
+            return res.status(401).json({ error: "Token invalide" });
+        }
+
+        try {
+            const result = await db.query(
+                "SELECT role from user where email = ?",
+                email
+            );
+
+            if (result[0].role === 'admin') {
+                next();
+            } else {
+                res.status(403).json({ erreur: "Accès refusé" });
+            }
+        } catch (error) {
+            res.status(500).json({ error: "Internal server " });
+        }
+    }
+    }
+    , []);
 
     return (
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 m-8">
@@ -77,9 +116,11 @@ export default () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.username}</td>
                                     <td className="text-right px-6 whitespace-nowrap">
-                                        <a href="javascript:void()" className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
+                                        <button 
+                                        onClick={() => handleModifierUser(item.id)} 
+                                        className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
                                             Modifier
-                                        </a>
+                                        </button>
                                         <button onClick={() => handleDeleteUser(item.id)} className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
                                             Supprimer
                                         </button>

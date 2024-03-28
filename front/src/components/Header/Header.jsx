@@ -1,5 +1,5 @@
 import { useState, } from "react"
-import Logo from "../../../public/logo-png.png"
+import Logo from "../../../public/logo-DoctoAnimals.png"
 
 
 
@@ -22,8 +22,8 @@ export default () => {
                     <a href="/accueil">
                         <img
                             src={Logo}
-                            width={120}
-                            height={50}
+                            width={150}
+                            height={100}
                             alt="Slider"
                         />
                     </a>

@@ -1,5 +1,5 @@
 import '../src/App.css'
-import { Link, Routes } from 'react-router-dom'
+import { Link, Outlet, Routes } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import Connexion from '../src/pages/Login/Login'
 import Header from '../src/components/Header/Header'
@@ -13,22 +13,45 @@ import Cabinet from './pages/Cabinets/Cabinet'
 import Admin from './pages/Admin/Admin'
 import Error404 from './pages/Error404/Error404'
 import Tarifs from './pages/Tarifs/Tarifs'
+import { useAuth } from '../context'
+import ModifierUser from './pages/ModifierUser/ModifierUser'
 
+
+const ProtectedRoute = () => {
+  return user ? <Outlet/> : <Navigate to="/accueil" />;
+};
 
 function App() {
+  const { user } = useAuth();
+
   return (
     <>
  <Header />
-   <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path='/accueil' element={<Home />} />
-      <Route path="/connexion" element={<Connexion />} />
-      <Route path="/inscription" element={<Inscription />} />
-      <Route path="/cabinets" element={<Cabinet />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="*" element={<Error404 />} />
-      <Route path='/tarifs' element={<Tarifs />} />
-    </Routes>
+  {user ? (
+        <Routes>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/" element={<Home />} />
+          <Route path='/accueil' element={<Home />} />
+          <Route path="/connexion" element={<Connexion />} />
+          <Route path="/inscription" element={<Inscription />} />
+          <Route path="/cabinets" element={<Cabinet />} />
+          <Route path="*" element={<Error404 />} />
+          <Route path='/tarifs' element={<Tarifs />} />
+          <Route path='/modifier/:id' element={<ModifierUser />} />
+        </Routes>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path='/accueil' element={<Home />} />
+            <Route path="/connexion" element={<Connexion />} />
+            <Route path="/inscription" element={<Inscription />} />
+            <Route path="/cabinets" element={<Cabinet />} />
+            <Route path="*" element={<Error404 />} />
+            <Route path='/tarifs' element={<Tarifs />} />
+            <Route path='/modifier/id' element={<ModifierUser />} />
+          </Routes>
+  )
+      }
    <Footer />  
   </>
   )

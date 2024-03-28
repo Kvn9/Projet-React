@@ -67,11 +67,12 @@ exports.register = async(req, res)=> {
     const token = jwt.sign({email}, process.env.SECRET_KEY, { expiresIn : '1h'})
     res.json({token})
 }
-        
+
+   
 exports.login = async(req, res)=> {
         // vérifier l'email de l'utilisateur => récupérer le mdp
         const { email, password } = req.body 
-        const result = await db.query('select * from user where email = ?', [email])
+        const result = await db.query('select email, password, role from user where email = ?', [email])
         if(result.length == 0){
             return res.status(401).json({error: "utilisateur non existant"})
         }
@@ -83,7 +84,8 @@ exports.login = async(req, res)=> {
             return res.status(401).json({error: "mdp incorrect"})
         }
         // renvoie jwt token pour la signature
-        const token = jwt.sign({email}, process.env.SECRET_KEY, { expiresIn : '1h'})
-        res.json({token})
+        const token = jwt.sign({email, ...utilisateur}, process.env.SECRET_KEY, { expiresIn : '1h'})
+        res.json({token, user:utilisateur})
+        
     }
     
