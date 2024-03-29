@@ -9,7 +9,7 @@ export default () => {
                   name: 'CONTACTEZ-NOUS'
               },
               {
-                  href: 'javascript:void()',
+                  href: '/FAQ',
                   name: 'FAQ'
               },
               {

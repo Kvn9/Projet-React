@@ -4,30 +4,30 @@ require ('dotenv').config();
 
 
 exports.getAllAnimaux = async(req, res)=> {
-    const sql = "SELECT * from animaux";
+    const sql = "CALL getallanimaux";
     const resultat = await db.query(sql);
     console.log(resultat)
-    res.status(200).json(resultat);
+    res.status(200).json(resultat[0]);
 }
 
 exports.updateAnimaux = async (req, res) => {
     const animal_id = req.params.id;
     const { age, genre} = req.body; // Ajout des variables manquantes
-    const sql = 'UPDATE animaux SET age = ?, genre = ? WHERE id = ?';
-    const result = await db.query(sql, [age, genre, animal_id]);
+    const sql = 'CALL updateanimaux(?, ?, ?)';
+    await db.query(sql, [animal_id, age, genre]);
     res.json({ message: 'Animaux mis à jour avec succès' });
 }
 
 exports.deleteAnimaux =  async (req, res) => {
     const animal_id = req.params.id;
-    const sql = 'DELETE FROM animaux WHERE id = ?';
-    const result = await db.query(sql, [animal_id]);
+    const sql = 'CALL deleteanimaux(?)';
+    await db.query(sql, [animal_id]);
     res.json({ message: 'Animaux supprimé avec succès' });
 } 
 
 exports.getAnimauxID = async (req, res) => {
     const animal_id = req.params.id;
-    const sql = 'SELECT * FROM animaux WHERE id = ?';
+    const sql = 'CALL updateanimaux(?)';
     const result = await db.query(sql, [animal_id]);
     res.json(result[0]);
 }

@@ -12,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const login = async ({email, password}) => {
         try {
+            console.log(email, password)
             const result = await axios.post("http://localhost:8000/utilisateur/login", {email, password});
             console.log(result);
             if(result.status){
@@ -40,5 +41,3 @@ return (
 )
 }
 export default AuthContextProvider;
-
-

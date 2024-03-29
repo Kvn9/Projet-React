@@ -1,29 +1,24 @@
-import Veterinaire from '../../../public/veterinaire-1.avif'
+import Veterinaire from '../../../public/medecin.avif'
 import { useState } from 'react'
 
-export default function ModifierUser () {
+export default function ModifierCabinet () {
 
-    const [email, setEmail] = useState("");
-    const [name, setName ] = useState("");
-    const [username, setUsername] = useState("");
+    const [telephone, setTelephone] = useState("");
+    const [nom, setNom ] = useState("");
+    const [adresse, setAdresse] = useState("");
 
     const handleUpdate = async (e) => {
         e.preventDefault();
         const id = window.location.pathname.split("/")[2];
-        const token = localStorage.getItem('token');
-        if (!token) return res.status(401).json({ error: "Access refusé." });
-        if (!email) {
-            return res.status(401).json({ error: "Token invalide" });
-        }
-        const response = await fetch(`http://localhost:8000/utilisateur/updateUtilisateur/${id}`, {
+        const response = await fetch(`http://localhost:8000/cabinet/updateCabinet/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',  
             },
             body: JSON.stringify({
-                name,
-                username,
-                email
+                nom,
+                telephone,
+                adresse
             })
         });
         const data = await response.json();
@@ -39,10 +34,10 @@ export default function ModifierUser () {
                 <div className="max-w-lg flex-1 mx-auto px-4 text-gray-600">
                     <div>
                         <h3 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                            Modifier Utiliasteur
+                            Modifier Cabinet
                         </h3>
                         <p className="mt-3 text-black">
-                            Modifier les informations de l'utilisateur
+                            Modifier les informations des cabinets
                         </p>
                     </div>
                     <form
@@ -55,32 +50,32 @@ export default function ModifierUser () {
                             </label>
                             <input
                                 type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={nom}
+                                onChange={(e) => setNom(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
                             <label className="font-medium">
-                                Prénom
+                                Adresse
                             </label>
                             <input
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={adresse}
+                                onChange={(e) => setAdresse(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
                             <label className="font-medium">
-                                Email
+                                Téléphone
                             </label>
                             <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="phone"
+                                value={telephone}
+                                onChange={(e) => setTelephone(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />

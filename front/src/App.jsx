@@ -15,6 +15,12 @@ import Error404 from './pages/Error404/Error404'
 import Tarifs from './pages/Tarifs/Tarifs'
 import { useAuth } from '../context'
 import ModifierUser from './pages/ModifierUser/ModifierUser'
+import ModifierCabinet from './pages/ModifierCabinet/ModifierCabinet'
+import AddUser from './pages/AddUser/AddUser'
+import AddCabinet from './pages/AddCabinet/AddCabinet'
+import FAQ from './pages/FAQ/FAQ'
+import ModifierAnimaux from './pages/ModifierAnimaux/ModifierAnimaux'
+import AddAnimaux from './pages/AddAnimaux/AddAnimaux'
 
 
 const ProtectedRoute = () => {
@@ -38,6 +44,12 @@ function App() {
           <Route path="*" element={<Error404 />} />
           <Route path='/tarifs' element={<Tarifs />} />
           <Route path='/modifier/:id' element={<ModifierUser />} />
+          <Route path='/modifierCabinet/:id' element={<ModifierCabinet />} />
+          <Route path='/ajouterUser' element={<AddUser />} />
+          <Route path='/ajouterCabinet' element={<AddCabinet />} />
+          <Route path='/modifierAnimaux/:id' element={<ModifierAnimaux />} />
+          <Route path='/ajouteranimal' element={<AddAnimaux />} />
+          <Route path='/FAQ' element={<FAQ />} />
         </Routes>
         ) : (
           <Routes>
@@ -49,6 +61,12 @@ function App() {
             <Route path="*" element={<Error404 />} />
             <Route path='/tarifs' element={<Tarifs />} />
             <Route path='/modifier/id' element={<ModifierUser />} />
+            <Route path='/modifierCabinet/:id' element={<ModifierCabinet />} />
+            <Route path='/ajouterUser' element={<AddUser />} />
+            <Route path='/ajouterCabinet' element={<AddCabinet />} />
+            <Route path='/modifierAnimaux/:id' element={<ModifierAnimaux />} />
+            <Route path='/ajouteranimal' element={<AddAnimaux />} />
+            <Route path='/FAQ' element={<FAQ />} />
           </Routes>
   )
       }

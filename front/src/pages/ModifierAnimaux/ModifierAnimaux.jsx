@@ -1,29 +1,22 @@
-import Veterinaire from '../../../public/veterinaire-1.avif'
+import Veterinaire from '../../../public/lion1.jpeg'
 import { useState } from 'react'
 
-export default function ModifierUser () {
+export default function ModifierCabinet () {
 
-    const [email, setEmail] = useState("");
-    const [name, setName ] = useState("");
-    const [username, setUsername] = useState("");
+    const [age, setAge] = useState("");
+    const [genre, setGenre ] = useState("");
 
     const handleUpdate = async (e) => {
         e.preventDefault();
         const id = window.location.pathname.split("/")[2];
-        const token = localStorage.getItem('token');
-        if (!token) return res.status(401).json({ error: "Access refusé." });
-        if (!email) {
-            return res.status(401).json({ error: "Token invalide" });
-        }
-        const response = await fetch(`http://localhost:8000/utilisateur/updateUtilisateur/${id}`, {
+        const response = await fetch(`http://localhost:8000/animaux/updateAnimaux/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',  
             },
             body: JSON.stringify({
-                name,
-                username,
-                email
+                age,
+                genre,
             })
         });
         const data = await response.json();
@@ -39,10 +32,10 @@ export default function ModifierUser () {
                 <div className="max-w-lg flex-1 mx-auto px-4 text-gray-600">
                     <div>
                         <h3 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                            Modifier Utiliasteur
+                            Modifier Animal
                         </h3>
                         <p className="mt-3 text-black">
-                            Modifier les informations de l'utilisateur
+                            Modifier les informations des animaux
                         </p>
                     </div>
                     <form
@@ -51,36 +44,24 @@ export default function ModifierUser () {
                     >
                         <div>
                             <label className="font-medium">
-                                Nom
+                                Age
                             </label>
                             <input
                                 type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={age}
+                                onChange={(e) => setAge(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
                             <label className="font-medium">
-                                Prénom
+                                Genre
                             </label>
                             <input
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
-                            />
-                        </div>
-                        <div>
-                            <label className="font-medium">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={genre}
+                                onChange={(e) => setGenre(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />

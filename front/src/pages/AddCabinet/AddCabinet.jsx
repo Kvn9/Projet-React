@@ -1,29 +1,29 @@
-import Veterinaire from '../../../public/veterinaire-1.avif'
+import Veterinaire from '../../../public/user.avif'
 import { useState } from 'react'
 
-export default function ModifierUser () {
+export default function AddUser () {
 
-    const [email, setEmail] = useState("");
-    const [name, setName ] = useState("");
-    const [username, setUsername] = useState("");
+    const [nom, setNom ] = useState("");
+    const [telephone, setTelephone] = useState("");
+    const [adresse, setAdresse] = useState("");
 
-    const handleUpdate = async (e) => {
+
+   const handleAddCabinet = async (e) => {
         e.preventDefault();
-        const id = window.location.pathname.split("/")[2];
         const token = localStorage.getItem('token');
         if (!token) return res.status(401).json({ error: "Access refusé." });
-        if (!email) {
+        if (!nom) {
             return res.status(401).json({ error: "Token invalide" });
         }
-        const response = await fetch(`http://localhost:8000/utilisateur/updateUtilisateur/${id}`, {
-            method: 'PUT',
+        const response = await fetch(`http://localhost:8000/cabinet/insertCabinet`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',  
             },
             body: JSON.stringify({
-                name,
-                username,
-                email
+                nom,
+                telephone,
+                adresse
             })
         });
         const data = await response.json();
@@ -39,48 +39,45 @@ export default function ModifierUser () {
                 <div className="max-w-lg flex-1 mx-auto px-4 text-gray-600">
                     <div>
                         <h3 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                            Modifier Utiliasteur
+                            Ajouter Cabinet
                         </h3>
                         <p className="mt-3 text-black">
-                            Modifier les informations de l'utilisateur
+                            Ajouter les informations des cabinets
                         </p>
                     </div>
                     <form
-                        onSubmit={handleUpdate}
+                        onSubmit={handleAddCabinet}
                         className="space-y-5 mt-12 lg:pb-12"
                     >
                         <div>
                             <label className="font-medium">
-                                Nom
+                                Nom Cabinet
                             </label>
                             <input
                                 type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={(e) => setNom(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
                             <label className="font-medium">
-                                Prénom
+                                Téléphone
                             </label>
                             <input
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => setTelephone(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
                             <label className="font-medium">
-                                Email
+                                Adresse
                             </label>
                             <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="text"
+                                onChange={(e) => setAdresse(e.target.value)}
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
                             />

@@ -4,11 +4,11 @@ const utilisateurRoute = require('../controllers/utilisateurController');
 const middleware = require('../middleware/middleware');
 
 router.get('/getAllUtilisateur', utilisateurRoute.getAllUtilisateur);
-router.put('/uptadeUtilisateur/:id', utilisateurRoute.updateUtilisateur);
+router.put('/updateUtilisateur/:id', utilisateurRoute.updateUtilisateur);
 router.delete('/deleteUtilisateur/:id', utilisateurRoute.deleteUtilisateur);
 router.get('/getUtilisateurID/:id', utilisateurRoute.getUtilisateurID);
-router.post('/insertUtilisateur', utilisateurRoute.insertUtilisateur);
 router.post('/login', utilisateurRoute.login);
 router.post('/register', utilisateurRoute.register);
+router.post('/insertUtilisateur', utilisateurRoute.insertUtilisateur);
 
 module.exports = router;
