@@ -15,7 +15,7 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre
 1. **Cloner le référentiel**
 
     ```
-    [git clone https://github.com/kvn/projet-site-web.git](https://github.com/Kvn9/Projet-React.git)
+    git clone https://github.com/kvn/projet-site-web.git
     ```
 
 2. **Installer les dépendances du serveur**
@@ -57,4 +57,7 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre
 - Partie Administrateur
 - Modification côté administrateur
 - Mise en place de middleware
-- Mise en place de route sécurisé 
+- Mise en place de route sécurisée
+- Mise en place de la Barre de recherche 🔍
+
+
